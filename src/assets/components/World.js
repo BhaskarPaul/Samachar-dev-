@@ -11,7 +11,7 @@ const World = ({ type }) => {
   const getAllNews = () => {
     axios
       .get(
-        `https://newsapi.org/v2/top-headlines?category=${type}&language=en&apiKey=${process.env.REACT_APP_API}`
+        `https://newsapi.org/v2/top-headlines?category=${type}&language=en&apiKey=${import.meta.env.VITE_API}`
       )
       // .then((response) => console.log(response.data.articles))
       .then((response) => setAllNews([...allNews, ...response.data.articles]))

@@ -1,5 +1,4 @@
 import React from "react";
-import SvgIcon from "@material-ui/core/SvgIcon";
 import NearMeRoundedIcon from "@material-ui/icons/NearMeRounded";
 import { makeStyles } from "@material-ui/core";
 import PlayCircleOutlineRoundedIcon from "@material-ui/icons/PlayCircleOutlineRounded";
