@@ -23,8 +23,6 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build",
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview"
