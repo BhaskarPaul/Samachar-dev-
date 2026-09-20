@@ -5,7 +5,6 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { withRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
-import axios from "axios";
 import ReactCountryFlag from "react-country-flag";
 import PublicIcon from "@material-ui/icons/Public";
 import SelfCountry from "./SelfCountry";
@@ -16,6 +15,7 @@ import MovieCreationRoundedIcon from "@material-ui/icons/MovieCreationRounded";
 import FavoriteRoundedIcon from "@material-ui/icons/FavoriteRounded";
 import LaptopChromebookRoundedIcon from "@material-ui/icons/LaptopChromebookRounded";
 import SportsEsportsRoundedIcon from "@material-ui/icons/SportsEsportsRounded";
+import useIPQuery from "../hooks/useIPQuery";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -28,43 +28,13 @@ const useStyle = makeStyles((theme) => ({
 
 const News = () => {
   const classes = useStyle();
+  const { loading, data } = useIPQuery();
 
-  const [showLoader, setShowLoader] = useState(true);
+  const [tab, setTab] = useState(0);
 
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleChange = (event, tab) => {
+    setTab(tab);
   };
-
-  useEffect(() => {
-    const handleTime = setTimeout(() => setShowLoader(false), 2000);
-    return () => clearTimeout(handleTime);
-  }, []);
-
-  // useEffect(() => {
-  //   console.log(value);
-  // }, [value, setValue]);
-
-  // for location
-  const [countryName, setCountryName] = useState("");
-  const [countryCode, setCountryCode] = useState("");
-
-  const getGeoInfo = () => {
-    axios
-      .get("https://ipapi.co/json/")
-      .then((response) => {
-        let data = response.data;
-        // console.log(data);
-        setCountryName(data.country_name);
-        setCountryCode(data.country_code);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    getGeoInfo();
-  }, []);
 
   const mainContent = () => {
     return (
@@ -72,7 +42,7 @@ const News = () => {
         <div className={classes.root}>
           <Paper square>
             <Tabs
-              value={value}
+              value={tab}
               indicatorColor="primary"
               textColor="primary"
               onChange={handleChange}
@@ -82,10 +52,9 @@ const News = () => {
               className={classes.tabs}
             >
               <Tab
-                icon={<ReactCountryFlag countryCode={countryCode} svg />}
-                label={`${countryName}`}
+                icon={<ReactCountryFlag countryCode={data?.country_code} svg />}
+                label={`${data?.country_name}`}
               />
-              {/* <Tab icon={<PublicIcon />} label="World" /> */}
 
               <Tab icon={<PublicIcon />} label="General" />
               <Tab icon={<LaptopChromebookRoundedIcon />} label="Technology" />
@@ -98,20 +67,20 @@ const News = () => {
           </Paper>
         </div>
         <div className="displayNews">
-          {value === 0 && <SelfCountry countryCode={countryCode} />}
-          {value === 1 && <World type="general" />}
-          {value === 2 && <World type="technology" />}
-          {value === 3 && <World type="business" />}
-          {value === 4 && <World type="entertainment" />}
-          {value === 5 && <World type="health" />}
-          {value === 6 && <World type="science" />}
-          {value === 7 && <World type="sports" />}
+          {tab === 0 && <SelfCountry countryCode={data?.country_code} />}
+          {tab === 1 && <World type="general" />}
+          {tab === 2 && <World type="technology" />}
+          {tab === 3 && <World type="business" />}
+          {tab === 4 && <World type="entertainment" />}
+          {tab === 5 && <World type="health" />}
+          {tab === 6 && <World type="science" />}
+          {tab === 7 && <World type="sports" />}
         </div>
       </div>
     );
   };
 
-  return <div>{showLoader ? <Loader /> : mainContent()}</div>;
+  return <div>{loading ? <Loader /> : mainContent()}</div>;
 };
 
 export default React.memo(withRouter(News));
