@@ -22,7 +22,7 @@ export default defineConfig({
     react(),
     allowJsxInJs(), // Plugs directly into the Vite/Oxc pipeline
   ],
-  base: "/Samachar-dev-/",
+  base: '/samachar/',
   // Add this legacy flag to handle strict CommonJS imports smoothly
   legacy: {
     inconsistentCjsInterop: true,

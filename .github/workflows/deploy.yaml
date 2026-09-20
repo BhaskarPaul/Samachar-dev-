@@ -1,18 +1,13 @@
-name: Build and Deploy to GitHub Pages
-
+name: Deploy to Vercel
 on:
   push:
     branches:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -20,16 +15,19 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.19
-          cache: 'yarn'
+          node-version: 20
+          cache: "yarn"
 
       - name: Install and Build
         run: |
           yarn install --frozen-lockfile
-          yarn run build
+          yarn build
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      # Vercel handles project creation automatically via CLI
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
         with:
-          folder: build
-          branch: gh-pages
+          vercel-token: ${{ secrets.VERCEL_DEPLOYMENT_TOKEN }}
+          vercel-args: "--prod"
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
