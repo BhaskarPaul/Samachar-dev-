@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": "20.19.x"
+    "node": "24.21.0"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
