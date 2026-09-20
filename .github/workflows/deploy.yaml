@@ -23,6 +23,9 @@ jobs:
           yarn install --frozen-lockfile
           yarn build
 
+      - name: Install Latest Vercel CLI
+        run: npm install --global vercel@latest
+
       # Vercel handles project creation automatically via CLI
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25

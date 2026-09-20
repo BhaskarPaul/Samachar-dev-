@@ -25,3 +25,5 @@ yarn-error.log*
 
 # local files
 src/API.js
+.vercel
+.env*
