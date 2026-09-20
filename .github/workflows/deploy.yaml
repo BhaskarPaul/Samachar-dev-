@@ -9,28 +9,37 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Download the repository code
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # Step 2: Set up Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20.19
           cache: "yarn"
 
+      # Step 3: Install dependencies and compile the production build
       - name: Install and Build
         run: |
           yarn install --frozen-lockfile
           yarn build
 
+      # Step 4: Force install the latest required Vercel CLI version
       - name: Install Latest Vercel CLI
         run: npm install --global vercel@latest
 
-      # Vercel handles project creation automatically via CLI
+      # Step 5: Link the project and pull remote settings securely
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_DEPLOYMENT_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      # Step 6: Deploy the built assets directly to production
       - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_DEPLOYMENT_TOKEN }}
-          vercel-args: "--prod"
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_DEPLOYMENT_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
