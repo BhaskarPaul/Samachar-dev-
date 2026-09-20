@@ -4,43 +4,33 @@ import NewsCard from "./Card";
 import Loader from "./Loader";
 import FloatingToTop from "./FloatingToTop";
 import { withRouter } from "react-router-dom";
+import useNewsQuery from "../hooks/useNewsQuery";
 
 const SelfCountry = ({ countryCode }) => {
   let newCountryCode = String(countryCode).toLowerCase();
-  const [allNews, setAllNews] = useState([]);
 
-  const getAllNews = () => {
-    axios
-      .get(
-        `https://newsapi.org/v2/top-headlines?country=${newCountryCode}&apiKey=${process.env.NEWSAPI_API_KEY}`
-      )
-      // .then((response) => console.log(response.data.articles))
-      .then((response) => setAllNews([...allNews, ...response.data.articles]))
-      .catch((err) => console.log(err));
-  };
-
-    useEffect(() => {
-        getAllNews();
-    }, []);
+  const { loading, data } = useNewsQuery({
+    params: { country: [newCountryCode] },
+  });
 
   return (
     <div>
       <FloatingToTop />
-      {allNews.length === 0 ? (
+      {loading ? (
         <Loader />
       ) : (
-        allNews.map(
-          (item, idx) =>
+        data?.articles?.map(
+          (item) =>
             item.title !== "No title" && (
               <NewsCard
-                key={idx}
+                key={item?.id}
                 title={item.title}
                 description={item.description}
-                image={item.urlToImage}
+                image={item.image}
                 content={item.content}
                 url={item.url}
               />
-            )
+            ),
         )
       )}
     </div>

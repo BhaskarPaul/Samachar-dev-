@@ -10,6 +10,7 @@ import { withRouter } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
+        justifyContent: "space-between",
         marginTop: "10px",
         marginBottom: "10px",
         cursor: "pointer",
@@ -18,14 +19,6 @@ const useStyles = makeStyles((theme) => ({
         backdropFilter:
             "blur(10px) saturate(100%) contrast(45%) brightness(130%)",
     },
-    // root: {
-    //     "&::before": {
-    //         backgroundColor: "rgba(255, 255, 255, 0.3)",
-    //         backdropFilter:
-    //             "blur(10px) saturate(100%) contrast(45%) brightness(130%)",
-    //         content: "",
-    //     },
-    // },
     details: {
         display: "flex",
         flexDirection: "column",
