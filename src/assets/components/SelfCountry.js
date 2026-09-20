@@ -12,7 +12,7 @@ const SelfCountry = ({ countryCode }) => {
   const getAllNews = () => {
     axios
       .get(
-        `https://newsapi.org/v2/top-headlines?country=${newCountryCode}&apiKey=${import.meta.env.NEWSAPI_API_KEY}`
+        `https://newsapi.org/v2/top-headlines?country=${newCountryCode}&apiKey=${process.env.NEWSAPI_API_KEY}`
       )
       // .then((response) => console.log(response.data.articles))
       .then((response) => setAllNews([...allNews, ...response.data.articles]))
