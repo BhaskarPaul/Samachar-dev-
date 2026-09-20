@@ -27,9 +27,6 @@ export default defineConfig({
   legacy: {
     inconsistentCjsInterop: true,
   },
-  build: {
-    outDir: "build",
-  },
   server: {
     port: 3000,
   },
